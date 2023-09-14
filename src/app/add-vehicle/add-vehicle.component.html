@@ -1,0 +1,162 @@
+<h2 class="mt-3">Add a vehicle</h2>
+<div class="mt-3" [formGroup]="add_form">
+  <div class="mb-3">
+    <label for="regNo" class="form-label">Reg No:</label>
+    <input type="text" class="form-control" formControlName="regno" />
+    <span
+      class="text-danger"
+      *ngIf="
+        add_form.controls['regno'].hasError('required') &&
+        (add_form.controls['regno'].dirty || add_form.controls['regno'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+
+  <div class="mb-3">
+    <label for="vehicleType" class="form-label">Vehicle Type:</label>
+    <select
+      #prodCat
+      class="form-control"
+      formControlName="vehicleType"
+      required
+    >
+      <option [ngValue]="null">Select Vehicle Type</option>
+      <option *ngFor="let c of vehicleType" [ngValue]="c">
+        {{ c.type }}
+      </option>
+    </select>
+    <span
+      class="text-danger"
+      *ngIf="
+        add_form.controls['vehicleType'].hasError('required') &&
+        (add_form.controls['vehicleType'].dirty ||
+          add_form.controls['vehicleType'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+
+  <div class="mb-3">
+    <label for="manufacturer" class="form-label">Manufacturer:</label>
+    <input type="text" class="form-control" formControlName="name" />
+    <span
+      class="text-danger"
+      *ngIf="
+        add_form.controls['name'].hasError('required') &&
+        (add_form.controls['name'].dirty || add_form.controls['name'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+  <div class="mb-3">
+    <label for="model" class="form-label">Model:</label>
+    <input type="text" class="form-control" formControlName="model" />
+    <span
+      class="text-danger"
+      *ngIf="
+        add_form.controls['model'].hasError('required') &&
+        (add_form.controls['model'].dirty || add_form.controls['model'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+  <label for="vehicleRent" class="form-label">Vehicle Rent:</label>
+  <div class="mb-3 input-group">
+    <span class="input-group-text" id="inputGroup-sizing-default">£</span>
+    <input
+      type="number"
+      #prodPrice
+      class="form-control"
+      formControlName="price"
+    />
+    <span
+      class="text-danger"
+      *ngIf="
+        add_form.controls['price'].hasError('required') &&
+        (add_form.controls['price'].dirty || add_form.controls['price'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+
+  <div class="mb-3">
+    <label for="mileage" class="form-label">Mileage:</label>
+    <input
+      type="number"
+      #mileage
+      class="form-control"
+      formControlName="mileage"
+    />
+    <span
+      class="text-danger"
+      *ngIf="
+        add_form.controls['mileage'].hasError('required') &&
+        (add_form.controls['mileage'].dirty ||
+          add_form.controls['mileage'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+
+  <div class="mb-3">
+    <label for="passengers" class="form-label">No. Passengers:</label>
+    <input
+      type="number"
+      #passengers
+      class="form-control"
+      formControlName="noPassengers"
+    />
+    <span
+      class="text-danger"
+      *ngIf="
+        add_form.controls['noPassengers'].hasError('required') &&
+        (add_form.controls['noPassengers'].dirty ||
+          add_form.controls['noPassengers'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+
+  <div class="mb-3">
+    <div class="mb-3">
+      <div class="form-check">
+        <input
+          value="Petrol"
+          class="form-check-input"
+          type="radio"
+          formControlName="fuelType"
+          name="fuelType"
+          id="petrol"
+          checked
+        />
+        <label class="form-check-label" for="petrol"> Petrol </label>
+      </div>
+      <div class="form-check">
+        <input
+          value="Diesel"
+          class="form-check-input"
+          type="radio"
+          formControlName="fuelType"
+          name="fuelType"
+          id="diesel"
+        />
+        <label class="form-check-label" for="diesel"> Diesel </label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description:</label>
+      <textarea class="form-control" formControlName="description"></textarea>
+    </div>
+
+    <button
+      [disabled]="add_form.invalid"
+      type="button"
+      (click)="add()"
+      class="btn btn-primary"
+    >
+      Add
+    </button>
+  </div>
+</div>

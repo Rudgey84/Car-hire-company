@@ -1,0 +1,86 @@
+<h2 class="mt-3">{{ vehicle.name | uppercase }} Details</h2>
+<p>{{ vehicle.description }}</p>
+
+<ngx-datatable
+  class="bootstrap"
+  [rows]="[vehicle]"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  columnMode="force"
+>
+  <ngx-datatable-column name="ID">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <strong>{{ row.id }}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="TYPE">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <strong>{{ row.vehicleType }}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="MANUFACTURER">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <strong>{{ row.name }}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="MODEL">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <strong>{{ row.model }}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="REGISTRATION">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <strong>{{ row.regno }}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="HIRE COST">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <strong>£{{ row.price }}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
+
+<h3>Extra Details</h3>
+<p>Number of wheels: {{ vehicle.noWheels }}</p>
+<p>Number of seats: {{ vehicle.noPassengers }}</p>
+<p>Fuel Type: {{ vehicle.fuelType }}</p>
+<p>Mileage: {{ vehicle.mileage }}</p>
+
+<div class="mt-3" [formGroup]="hire_form">
+  <div class="mb-3">
+    <label for="customerSelect" class="form-label"
+      >Select Hiring Customer:</label
+    >
+    <select
+      #customerSelect
+      class="form-control"
+      formControlName="customerSelect"
+      required
+    >
+      <option *ngFor="let c of customer" [ngValue]="c">
+        {{ c.name }}
+      </option>
+    </select>
+    <span
+      class="text-danger"
+      *ngIf="
+        hire_form.controls['customerSelect'].hasError('required') &&
+        (hire_form.controls['customerSelect'].dirty ||
+          hire_form.controls['customerSelect'].touched)
+      "
+      >This field is required</span
+    >
+  </div>
+
+  <button [disabled]="hire_form.invalid" type="button" class="btn btn-primary mt-3 me-2" (click)="hire()">
+    Hire Now
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-secondary mt-3"
+    (click)="goBack()"
+  >
+    Back
+  </button>
+</div>
