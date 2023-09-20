@@ -4,7 +4,7 @@ import { Vehicle } from '../vehicle.interface';
 import { VehicleType } from '../vehicle-type.interface';
 import { VehicleService } from '../vehicle.mock.service';
 import { Location } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-addvehicle',
@@ -15,6 +15,7 @@ export class AddvehicleComponent implements OnInit {
   readonly add_form: FormGroup;
   public vehicles: Vehicle[];
   public vehicleType: VehicleType[];
+  private combinedSubscription: Subscription;
 
   constructor(
     private vehicleService: VehicleService,
@@ -93,13 +94,20 @@ export class AddvehicleComponent implements OnInit {
   //   this.vehicleService.getVehicles().subscribe((v) => (this.vehicles = v));
   // }
 
+  //forkjoin and unsubscribe e.g
   private getVehicleData(): void {
-    forkJoin([
+    this.combinedSubscription = forkJoin([
       this.vehicleService.getVehicleTypes(),
       this.vehicleService.getVehicles(),
     ]).subscribe(([vehicleType, vehicles]) => {
       this.vehicleType = vehicleType;
       this.vehicles = vehicles;
     });
+  }
+
+  ngOnDestroy() {
+    if (this.combinedSubscription) {
+      this.combinedSubscription.unsubscribe();
+    }
   }
 }
