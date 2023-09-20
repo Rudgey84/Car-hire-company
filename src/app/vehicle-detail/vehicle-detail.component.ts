@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Vehicle } from '../vehicle.interface';
 import { VehicleService } from '../vehicle.mock.service';
-
+import { forkJoin } from 'rxjs';
 import { Customer } from '../customer.interface';
 
 @Component({
@@ -42,20 +42,33 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.getVehicle();
-    this.getCustomer();
+  //  this.getVehicle();
+  //  this.getCustomer();
+    this.getVehicleAndCustomer()
   }
 
-  private getVehicle(): void {
+  // private getVehicle(): void {
+  //   const id = +this.activatedRoute.snapshot.paramMap.get('id');
+  //   this.vehicleService
+  //     .getVehicle(id)
+  //     .subscribe((vehicle) => (this.vehicle = vehicle));
+  // }
+
+  // private getCustomer(): void {
+  //   this.vehicleService.getCustomers().subscribe((customer: Customer[]) => {
+  //     this.customer = customer;
+  //   });
+  // }
+
+  private getVehicleAndCustomer(): void {
     const id = +this.activatedRoute.snapshot.paramMap.get('id');
-    this.vehicleService
-      .getVehicle(id)
-      .subscribe((vehicle) => (this.vehicle = vehicle));
-  }
-
-  private getCustomer(): void {
-    this.vehicleService.getCustomers().subscribe((customer: Customer[]) => {
-      this.customer = customer;
+    
+    forkJoin([
+      this.vehicleService.getVehicle(id),
+      this.vehicleService.getCustomers()
+    ]).subscribe(([vehicle, customers]) => {
+      this.vehicle = vehicle;
+      this.customer = customers;
     });
   }
 }

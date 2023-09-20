@@ -4,6 +4,7 @@ import { Vehicle } from '../vehicle.interface';
 import { VehicleType } from '../vehicle-type.interface';
 import { VehicleService } from '../vehicle.mock.service';
 import { Location } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-addvehicle',
@@ -29,7 +30,7 @@ export class AddvehicleComponent implements OnInit {
       description: [null, Validators.required],
       fuelType: [null, Validators.required],
       model: [null, Validators.required],
-      noPassengers: [null, Validators.required]
+      noPassengers: [null, Validators.required],
     });
   }
 
@@ -43,9 +44,9 @@ export class AddvehicleComponent implements OnInit {
       fuelType,
       description,
       model,
-      noPassengers
+      noPassengers,
     } = this.add_form.value;
-    
+
     let noWheels;
     if (vehicleType.type === 'Motorbike') {
       noWheels = 2;
@@ -64,7 +65,7 @@ export class AddvehicleComponent implements OnInit {
         description: description,
         model: model,
         noWheels: noWheels,
-        noPassengers: noPassengers
+        noPassengers: noPassengers,
       } as Vehicle)
       .subscribe((v) => this.vehicles.push(v));
     setTimeout(() => {
@@ -77,19 +78,28 @@ export class AddvehicleComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.getVehicles();
-    this.getVehicleTypes();
+    this.getVehicleData();
+    // this.getVehicles();
+    // this.getVehicleTypes();
   }
 
-  private getVehicleTypes() {
-    this.vehicleService
-      .getVehicleTypes()
-      .subscribe((vehicleType) => (this.vehicleType = vehicleType));
-  }
+  // private getVehicleTypes() {
+  //   this.vehicleService
+  //     .getVehicleTypes()
+  //     .subscribe((vehicleType) => (this.vehicleType = vehicleType));
+  // }
 
-  private getVehicles(): void {
-    this.vehicleService
-      .getVehicles()
-      .subscribe((v) => (this.vehicles = v));
+  // private getVehicles(): void {
+  //   this.vehicleService.getVehicles().subscribe((v) => (this.vehicles = v));
+  // }
+
+  private getVehicleData(): void {
+    forkJoin([
+      this.vehicleService.getVehicleTypes(),
+      this.vehicleService.getVehicles(),
+    ]).subscribe(([vehicleType, vehicles]) => {
+      this.vehicleType = vehicleType;
+      this.vehicles = vehicles;
+    });
   }
 }

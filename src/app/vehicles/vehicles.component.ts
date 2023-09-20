@@ -40,7 +40,7 @@ export class VehiclesComponent implements OnInit {
     this.vehicleService.getVehicles().subscribe((vehicles: Vehicle[]) => {
       this.vehicles = this.getFilteredVehicles(vehicles);
       this.hiredVehicles = this.getHiredVehicles(vehicles);
-    //  this.assignVehiclesToCustomers();
+
     });
   }
 
@@ -48,7 +48,6 @@ export class VehiclesComponent implements OnInit {
     this.vehicleService.getCustomers().subscribe((customer: Customer[]) => {
       this.customer = customer;
     });
-   // this.assignVehiclesToCustomers();
   }
 
   private assignVehiclesToCustomers(): void {
