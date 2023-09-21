@@ -17,7 +17,7 @@ export class VehiclesComponent implements OnInit {
   private vehicleService = inject(VehicleService);
   //constructor(private vehicleService: VehicleService) {}
 
-  public return(id): void {
+  public returnVehicle(id): void {
     const vehicleToReturn = this.hiredVehicles.find(
       (vehicle) => vehicle.id === id
     );
